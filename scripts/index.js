@@ -1,16 +1,16 @@
-var imagens = [
-  './assets/gato.png',
-  './assets/macaco.png',
-  './assets/porco.png',
-  './assets/ovelha.png',
-  './assets/rinoceronte.png',
-  './assets/gato.png',
-  './assets/macaco.png',
-  './assets/porco.png',
-  './assets/ovelha.png',
-  './assets/rinoceronte.png',
-  './assets/rato.png',
-  './assets/rato.png',
+var cardImages = [
+  './assets/card_animal_cat.png',
+  './assets/card_animal_monkey.png',
+  './assets/card_animal_pig.png',
+  './assets/card_animal_sheep.png',
+  './assets/card_animal_rhino.png',
+  './assets/card_animal_cat.png',
+  './assets/card_animal_monkey.png',
+  './assets/card_animal_pig.png',
+  './assets/card_animal_sheep.png',
+  './assets/card_animal_rhino.png',
+  './assets/card_animal_rat.png',
+  './assets/card_animal_rat.png',
 ];
 
 var primeiro = null;
@@ -20,39 +20,39 @@ var pontuacao = 0;
 var tentativas = 0;
 var tempI, tempF;
 
-function prepararJogo() {
-  for (var i = 0; i < imagens.length; ++i) {
+function setupGame() {
+  for (var i = 0; i < cardImages.length; ++i) {
     var img = document.getElementById(`img${i}`);
-    img.src = imagens[i];
+    img.src = cardImages[i];
   }
 
-  iniciarJogo();
+  startGame();
 }
 
-function iniciarJogo() {
+function startGame() {
   var data = new Date();
   tempI = data.getMinutes();
-
   document.getElementById('div1').style.display = 'block';
+
   setTimeout(cobrir, 1000);
 
   function cobrir() {
-    for (var i = 0; i < imagens.length; ++i) {
+    for (var i = 0; i < cardImages.length; ++i) {
       var img = document.getElementById(`img${i}`);
-      img.src = './assets/fundo.png';
+      img.src = './assets/card_background.png';
     }
   }
 
   document.getElementById('btn1').style.display = 'none';
 }
 
-function clicar(x, index) {
+function onClickCard(x, index) {
   ++tentativas;
-  x.src = imagens[index];
-  comparar(x);
+  x.src = cardImages[index];
+  compareCards(x);
 }
 
-function finalizarJogo() {
+function finishGame() {
   if (contador > 5) {
     var data = new Date();
     tempF = Number(data.getMinutes());
@@ -64,19 +64,21 @@ function finalizarJogo() {
     }
 
     pontuacao = parseInt(10000 / (tentativas + tempF * 5));
+
     var div = document.querySelector('div#div3');
     div.innerText = `parabéns você conseguiu: ${pontuacao} pontos!!!`;
     div.style.display = 'block';
+
     var div = document.querySelector('div#div4');
     div.style.display = 'block';
   }
 }
 
-function jogarNovamente() {
+function restartGame() {
   parent.window.document.location.href = '';
 }
 
-function comparar(x) {
+function compareCards(x) {
   if (primeiro == null) {
     primeiro = x;
   } else if (segundo == null) {
@@ -85,28 +87,24 @@ function comparar(x) {
 
   if (primeiro != null && segundo != null) {
     if (primeiro.src == segundo.src && primeiro != segundo) {
-      setTimeout(mostarImagemCerta, 200);
-
-      function mostarImagemCerta() {
+      setTimeout(() => {
         primeiro.onclick = '';
         segundo.onclick = '';
-        primeiro.src = './assets/branco.png';
-        segundo.src = './assets/branco.png';
+        primeiro.src = './assets/card_background_blank.png';
+        segundo.src = './assets/card_background_blank.png';
         primeiro = null;
         segundo = null;
         ++contador;
-      }
+      }, 200);
 
-      setTimeout(finalizarJogo, 400);
+      setTimeout(finishGame, 400);
     } else {
-      setTimeout(mostarImagemErrada, 400);
-
-      function mostarImagemErrada() {
-        primeiro.src = './assets/fundo.png';
-        segundo.src = './assets/fundo.png';
+      setTimeout(() => {
+        primeiro.src = './assets/card_background.png';
+        segundo.src = './assets/card_background.png';
         primeiro = null;
         segundo = null;
-      }
+      }, 400);
     }
   }
 }
