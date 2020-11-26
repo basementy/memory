@@ -101,4 +101,27 @@ context('Actions', () => {
     cy.get('#img1')
     .should('have.attr', 'src', 'fundo.png')
   })
+
+  it('Remove image after correct answer', () => {
+    cy.get('#btn1')
+      .click()
+
+    cy.wait(1000);
+
+    cy.get('#img0')
+      .should('have.attr', 'src', 'fundo.png')
+      .click()
+      .should('have.attr', 'src', 'gato.png')
+
+    cy.get('#img5')
+      .should('have.attr', 'src', 'fundo.png')
+      .click()
+      .should('have.attr', 'src', 'gato.png')
+
+    cy.get('#img0')
+      .should('have.attr', 'src', 'branco.png')
+
+    cy.get('#img5')
+    .should('have.attr', 'src', 'branco.png')
+  })
 })
